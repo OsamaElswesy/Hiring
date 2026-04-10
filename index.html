@@ -276,12 +276,13 @@
     }
   }
 
-  // Ambient slight wandering
+  // Ambient active wandering (proactive movement so it's obvious on phones without tapping)
   function ambientDrift() {
     if (prefersReduced) return;
     
     releaseToFloatingPosition();
-    btnNo.style.transition = 'left 2s ease-in-out, top 2s ease-in-out, transform .15s';
+    // Snappier, more noticeable movement
+    btnNo.style.transition = 'left 0.8s cubic-bezier(0.25, 1, 0.5, 1), top 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform .15s';
     
     const maxX = Math.max(0, areaDims.w - noBtnDims.w - padding * 2);
     const maxY = Math.max(0, areaDims.h - noBtnDims.h - padding * 2);
@@ -289,8 +290,9 @@
     const currX = parseFloat(btnNo.style.left) || padding;
     const currY = parseFloat(btnNo.style.top)  || padding;
 
-    let nX = currX + (Math.random() - 0.5) * 60;
-    let nY = currY + (Math.random() - 0.5) * 40;
+    // Much larger radius so the movement is actively escaping
+    let nX = currX + (Math.random() - 0.5) * 200;
+    let nY = currY + (Math.random() - 0.5) * 120;
     
     nX = Math.max(padding, Math.min(nX, padding + maxX));
     nY = Math.max(padding, Math.min(nY, padding + maxY));
@@ -374,7 +376,7 @@
     // Re-engage ambient motion after settling
     setTimeout(() => {
         clearInterval(driftInterval);
-        driftInterval = setInterval(ambientDrift, 2200);
+        driftInterval = setInterval(ambientDrift, 1500);
     }, 400);
   }
 
@@ -403,11 +405,11 @@
     dodgeAwayFrom(e.clientX, e.clientY);
   });
 
-  // Init gentle motion
+  // Init proactive motion
   setTimeout(() => {
     ambientDrift();
-    driftInterval = setInterval(ambientDrift, 2200);
-  }, 800);
+    driftInterval = setInterval(ambientDrift, 1500);
+  }, 600);
 
   // Success Interaction
   btnYes.addEventListener('click', () => {
