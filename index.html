@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Will you give me a chance? 💌</title>
+  <meta name="description" content="A playful job application page — will you give me a chance to interview?" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fce4ec;
+      font-family: 'Nunito', -apple-system, 'Segoe UI', Roboto, sans-serif;
+      overflow: hidden;
+    }
+
+    /* ─────── Reduced motion: Accessibility ─────── */
+    @media (prefers-reduced-motion: reduce) {
+      .floater { animation: none !important; display: none !important; }
+      .emoji-icon { animation: none !important; }
+      .success-view { animation: none !important; }
+      .btn-no { transition: none !important; }
+    }
+
+    /* ─────── Floating background emojis ─────── */
+    .floater {
+      position: fixed;
+      bottom: -50px;
+      opacity: 0.14;
+      pointer-events: none;
+      will-change: transform;
+      animation: rise linear infinite;
+    }
+    @keyframes rise {
+      to { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* ─────── Main Card ─────── */
+    .card {
+      position: relative;
+      z-index: 1;
+      background: #fff;
+      border-radius: 28px;
+      width: 380px;
+      max-width: 90vw;
+      min-height: 340px;
+      padding: 48px 36px 38px;
+      box-shadow: 0 8px 36px rgba(0,0,0,.07);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ─────── Icon ─────── */
+    .emoji-icon {
+      font-size: 60px;
+      margin-bottom: 18px;
+      animation: heartbeat 2s ease-in-out infinite;
+    }
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50%      { transform: scale(1.12); }
+    }
+
+    /* ─────── Header Question ─────── */
+    .question {
+      font-size: 21px;
+      font-weight: 800;
+      color: #37474f;
+      line-height: 1.4;
+      margin-bottom: 30px;
+    }
+
+    /* ─────── Button Container ─────── */
+    .btn-area {
+      position: relative;
+      width: 100%;
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    /* ─────── YES Button ─────── */
+    .btn-yes {
+      --yes-scale: 1;
+      background: linear-gradient(135deg, #f48fb1, #ec407a);
+      color: #fff;
+      border: none;
+      padding: 13px 42px;
+      border-radius: 50px;
+      font-size: 17px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 4px 18px rgba(236,64,122,.35);
+      transform: scale(var(--yes-scale));
+      transition: transform .2s, box-shadow .2s;
+      position: relative;
+      z-index: 2;
+    }
+    .btn-yes:hover {
+      transform: scale(calc(var(--yes-scale) * 1.06));
+      box-shadow: 0 6px 24px rgba(236,64,122,.5);
+    }
+    .btn-yes:active {
+      transform: scale(calc(var(--yes-scale) * 0.95));
+    }
+
+    /* ─────── Focus / Accessibility ─────── */
+    .btn-yes:focus-visible,
+    .btn-no:focus-visible {
+      outline: 3px solid #e91e63;
+      outline-offset: 3px;
+    }
+
+    /* ─────── NO Button ─────── */
+    .btn-no {
+      background: #f0f0f0;
+      color: #9e9e9e;
+      border: none;
+      padding: 9px 26px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      z-index: 1;
+    }
+    .btn-no:hover { transform: scale(1.04); }
+    .btn-no.floating { position: absolute; }
+
+    /* ─────── Helper Text ─────── */
+    .helper {
+      font-size: 13px;
+      color: #b0bec5;
+      font-style: italic;
+    }
+
+    /* ─────── Success State ─────── */
+    .success-view {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      animation: popIn .5s ease;
+    }
+    @keyframes popIn {
+      0%   { transform: scale(.5); opacity: 0; }
+      70%  { transform: scale(1.08); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+    .success-view .emoji-icon { animation: none; }
+    .success-view h2 {
+      font-size: 34px;
+      font-weight: 800;
+      color: #e91e63;
+      margin-bottom: 8px;
+    }
+    .success-view p {
+      font-size: 16px;
+      color: #607d8b;
+      font-weight: 600;
+    }
+
+    /* ─────── Confetti Canvas ─────── */
+    #confetti {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    @media (max-width: 420px) {
+      .card { padding: 36px 22px 30px; }
+      .question { font-size: 18px; }
+      .btn-yes { padding: 12px 34px; font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Main Card -->
+  <section class="card" id="card">
+    <!-- Ask View -->
+    <div id="askView">
+      <div class="emoji-icon" aria-hidden="true">💌</div>
+      <h1 class="question">Will you give me a chance<br>to interview?</h1>
+      <div class="btn-area" id="btnArea">
+        <button class="btn-yes" id="btnYes" type="button">Yes</button>
+        <button class="btn-no"  id="btnNo"  type="button">No</button>
+      </div>
+      <p class="helper">*"No" seems a bit shy 😌*</p>
+    </div>
+
+    <!-- Success View -->
+    <div class="success-view" id="successView" aria-live="polite">
+      <div class="emoji-icon" aria-hidden="true">🥳</div>
+      <h2>YAY! 🎉</h2>
+      <p>Looking forward to speaking with you</p>
+    </div>
+  </section>
+
+  <canvas id="confetti" aria-hidden="true"></canvas>
+
+<script>
+(() => {
+  'use strict';
+
+  // Component References
+  const btnArea     = document.getElementById('btnArea');
+  const btnYes      = document.getElementById('btnYes');
+  const btnNo       = document.getElementById('btnNo');
+  const askView     = document.getElementById('askView');
+  const successView = document.getElementById('successView');
+  const confettiEl  = document.getElementById('confetti');
+  const ctx         = confettiEl.getContext('2d');
+
+  // Device & Settings detection
+  const isTouchDevice = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Background floating emojis (Disable if prefers-reduced-motion is on)
+  if (!prefersReduced) {
+    const pool = ['💕', '💗', '✨', '🌸', '💖'];
+    const count = isTouchDevice ? 6 : 10;
+    for (let i = 0; i < count; i++) {
+      const el = document.createElement('div');
+      el.className = 'floater';
+      el.setAttribute('aria-hidden', 'true');
+      el.textContent = pool[i % pool.length];
+      el.style.left = Math.random() * 100 + '%';
+      el.style.fontSize = (14 + Math.random() * 14) + 'px';
+      el.style.animationDuration = (10 + Math.random() * 12) + 's';
+      el.style.animationDelay = (Math.random() * 10) + 's';
+      document.body.appendChild(el);
+    }
+  }
+
+  // Dimension caching to avoid layout thrashing
+  let areaDims  = { w: 0, h: 0 };
+  let noBtnDims = { w: 0, h: 0 };
+
+  function cacheDimensions() {
+    areaDims.w = btnArea.clientWidth;
+    areaDims.h = btnArea.clientHeight;
+    noBtnDims.w = btnNo.offsetWidth;
+    noBtnDims.h = btnNo.offsetHeight;
+  }
+  cacheDimensions();
+  window.addEventListener('resize', cacheDimensions);
+
+  // Dodge Rules
+  let dodges = 0;
+  const MAX_DODGES = 6; 
+  let settled = prefersReduced;
+  let driftInterval = null;
+  const padding = 10;
+
+  // Converts normal flex item into absolutely positioned element at its exact current flexbox coordinates
+  function releaseToFloatingPosition() {
+    if (!btnNo.classList.contains('floating')) {
+      const rA = btnArea.getBoundingClientRect();
+      const rN = btnNo.getBoundingClientRect();
+      btnNo.style.left = (rN.left - rA.left) + 'px';
+      btnNo.style.top = (rN.top - rA.top) + 'px';
+      btnNo.classList.add('floating');
+    }
+  }
+
+  // Slowly roam randomly around the container
+  function drift() {
+    if (settled || isTouchDevice || prefersReduced) return;
+    
+    releaseToFloatingPosition();
+    btnNo.style.transition = 'left 2s ease-in-out, top 2s ease-in-out, transform .15s';
+    
+    const maxX = Math.max(0, areaDims.w - noBtnDims.w - padding * 2);
+    const maxY = Math.max(0, areaDims.h - noBtnDims.h - padding * 2);
+
+    const currX = parseFloat(btnNo.style.left) || padding;
+    const currY = parseFloat(btnNo.style.top)  || padding;
+
+    // Pick a new point roughly nearby current point for slow graceful drifting
+    let nX = currX + (Math.random() - 0.5) * 80;
+    let nY = currY + (Math.random() - 0.5) * 60;
+    
+    nX = Math.max(padding, Math.min(nX, padding + maxX));
+    nY = Math.max(padding, Math.min(nY, padding + maxY));
+
+    btnNo.style.left = nX + 'px';
+    btnNo.style.top  = nY + 'px';
+  }
+
+  // Execute a rapid quick-dodge
+  function dodgeFast() {
+    if (settled) return;
+    dodges++;
+
+    if (dodges >= MAX_DODGES) {
+      // Joke is over. Surrender and stop moving.
+      settled = true;
+      clearInterval(driftInterval);
+      btnNo.style.transition = 'left 0.4s ease, top 0.4s ease, transform .15s';
+      return; 
+    }
+
+    clearInterval(driftInterval);
+    releaseToFloatingPosition();
+    
+    // Quick hardware accelerated transition
+    btnNo.style.transition = 'left 0.15s ease-out, top 0.15s ease-out, transform .15s';
+    
+    const maxX = Math.max(0, areaDims.w - noBtnDims.w - padding * 2);
+    const maxY = Math.max(0, areaDims.h - noBtnDims.h - padding * 2);
+
+    btnNo.style.left = (padding + Math.random() * maxX) + 'px';
+    btnNo.style.top  = (padding + Math.random() * maxY) + 'px';
+
+    // Grow Yes softly to emphasize the CTA
+    const s = Math.min(1 + dodges * 0.04, 1.25);
+    btnYes.style.setProperty('--yes-scale', s);
+
+    // After sprinting away, recover and start ambient drifting again
+    setTimeout(() => {
+      if (!settled && !isTouchDevice) {
+        driftInterval = setInterval(drift, 2200);
+      }
+    }, 400);
+  }
+
+  // Event Listeners Based on Device
+  if (!isTouchDevice) {
+    // Desktop: Read mouse proximity.
+    document.addEventListener('mousemove', (e) => {
+      if (settled || prefersReduced) return;
+      const rect = btnNo.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      
+      // Calculate distance between mouse point and center chunk of button
+      const dist = Math.hypot(e.clientX - cx, e.clientY - cy);
+      // Hover threshold where the button gets 'scared'
+      if (dist < 70) {
+        dodgeFast();
+      }
+    });
+
+    // Initiate ambient drifting shortly after load
+    setTimeout(() => {
+      if (!settled) {
+        drift();
+        driftInterval = setInterval(drift, 2200);
+      }
+    }, 1000);
+    
+  } else {
+    // Mobile/Touch device: Do not drift and don't read proximity
+    btnNo.addEventListener('touchstart', (e) => {
+      if (dodges === 0 && !prefersReduced) {
+        e.preventDefault(); // Stop standard click on first ever tap
+        dodges++;
+        releaseToFloatingPosition();
+        btnNo.style.transition = 'left 0.25s ease-out, top 0.25s ease-out, transform .15s';
+        
+        const maxX = Math.max(0, areaDims.w - noBtnDims.w - padding * 2);
+        const maxY = Math.max(0, areaDims.h - noBtnDims.h - padding * 2);
+        
+        // Single light playful shift
+        btnNo.style.left = (padding + Math.random() * maxX) + 'px';
+        btnNo.style.top  = (padding + Math.random() * maxY) + 'px';
+        btnYes.style.setProperty('--yes-scale', 1.05);
+
+        settled = true; // Stay in place to let user tap afterwards
+      }
+    }, { passive: false });
+  }
+
+  // Accessibility & Fallback: Even if dodging, if user manages to click, trigger a dodge (or admit defeat)
+  btnNo.addEventListener('click', dodgeFast);
+
+  // Success Interaction logic
+  btnYes.addEventListener('click', () => {
+    askView.style.display     = 'none';
+    successView.style.display = 'flex';
+    if (!prefersReduced) fireConfetti();
+  });
+
+  // Confetti system
+  function fireConfetti() {
+    confettiEl.width  = innerWidth;
+    confettiEl.height = innerHeight;
+
+    const colors = ['#ec407a','#ab47bc','#ffb74d','#4fc3f7','#66bb6a','#fff176','#ff7043'];
+    const bits = [];
+
+    for (let i = 0; i < 80; i++) {
+      bits.push({
+        x: Math.random() * confettiEl.width,
+        y: Math.random() * confettiEl.height - confettiEl.height,
+        w: 5 + Math.random() * 6,
+        h: 3 + Math.random() * 5,
+        r: Math.random() * 360,
+        dx: (Math.random() - 0.5) * 5,
+        dy: 2 + Math.random() * 4,
+        dr: (Math.random() - 0.5) * 10,
+        color: colors[i % colors.length],
+        alpha: 1
+      });
+    }
+
+    let tick = 0;
+    function loop() {
+      ctx.clearRect(0, 0, confettiEl.width, confettiEl.height);
+      let alive = false;
+
+      for (let i = 0; i < bits.length; i++) {
+        const b = bits[i];
+        b.x  += b.dx;
+        b.y  += b.dy;
+        b.dy += 0.05;
+        b.r  += b.dr;
+        if (tick > 70) b.alpha -= 0.016;
+        if (b.alpha <= 0) continue;
+        
+        alive = true;
+        ctx.save();
+        ctx.translate(b.x, b.y);
+        ctx.rotate(b.r * Math.PI / 180);
+        ctx.globalAlpha = Math.max(b.alpha, 0);
+        ctx.fillStyle = b.color;
+        ctx.fillRect(-b.w / 2, -b.h / 2, b.w, b.h);
+        ctx.restore();
+      }
+
+      tick++;
+      if (alive) requestAnimationFrame(loop);
+    }
+    loop();
+  }
+
+  window.addEventListener('resize', () => {
+    confettiEl.width  = innerWidth;
+    confettiEl.height = innerHeight;
+  });
+
+})();
+</script>
+</body>
+</html>
