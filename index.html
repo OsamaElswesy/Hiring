@@ -59,6 +59,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      overflow: hidden;
     }
 
     /* ─────── Icon ─────── */
@@ -83,7 +84,6 @@
 
     /* ─────── Button Container ─────── */
     .btn-area {
-      position: relative;
       width: 100%;
       height: 120px;
       display: flex;
@@ -91,7 +91,6 @@
       justify-content: center;
       gap: 14px;
       margin-bottom: 16px;
-      overflow: hidden;
     }
 
     /* ─────── YES Button ─────── */
@@ -253,8 +252,8 @@
   let noBtnDims = { w: 0, h: 0 };
 
   function cacheDimensions() {
-    areaDims.w = btnArea.clientWidth;
-    areaDims.h = btnArea.clientHeight;
+    areaDims.w = card.clientWidth;
+    areaDims.h = card.clientHeight;
     noBtnDims.w = btnNo.offsetWidth;
     noBtnDims.h = btnNo.offsetHeight;
   }
@@ -268,7 +267,7 @@
   // Converts normal flex item into absolutely positioned element exactly where it is
   function releaseToFloatingPosition() {
     if (!btnNo.classList.contains('floating')) {
-      const rA = btnArea.getBoundingClientRect();
+      const rA = card.getBoundingClientRect();
       const rN = btnNo.getBoundingClientRect();
       btnNo.style.left = (rN.left - rA.left) + 'px';
       btnNo.style.top = (rN.top - rA.top) + 'px';
@@ -305,7 +304,7 @@
   function dodgeAwayFrom(sensorX, sensorY) {
     if (prefersReduced) return;
     
-    const rectA = btnArea.getBoundingClientRect();
+    const rectA = card.getBoundingClientRect();
     const rectN = btnNo.getBoundingClientRect();
     
     const btnCx = rectN.left + rectN.width / 2;
