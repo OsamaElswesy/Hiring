@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Will you give me a chance? 💌</title>
+  <title>TrustMeOnThis</title>
   <meta name="description" content="A playful job application page — will you give me a chance to interview?" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -11,7 +12,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet" />
 
   <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
       min-height: 100vh;
@@ -25,10 +32,22 @@
 
     /* ─────── Reduced motion: Accessibility ─────── */
     @media (prefers-reduced-motion: reduce) {
-      .floater { animation: none !important; display: none !important; }
-      .emoji-icon { animation: none !important; }
-      .success-view { animation: none !important; }
-      .btn-no { transition: none !important; }
+      .floater {
+        animation: none !important;
+        display: none !important;
+      }
+
+      .emoji-icon {
+        animation: none !important;
+      }
+
+      .success-view {
+        animation: none !important;
+      }
+
+      .btn-no {
+        transition: none !important;
+      }
     }
 
     /* ─────── Floating background emojis ─────── */
@@ -40,8 +59,12 @@
       will-change: transform;
       animation: rise linear infinite;
     }
+
     @keyframes rise {
-      to { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+      to {
+        transform: translateY(-110vh) rotate(360deg);
+        opacity: 0;
+      }
     }
 
     /* ─────── Main Card ─────── */
@@ -54,7 +77,7 @@
       max-width: 90vw;
       min-height: 340px;
       padding: 48px 36px 38px;
-      box-shadow: 0 8px 36px rgba(0,0,0,.07);
+      box-shadow: 0 8px 36px rgba(0, 0, 0, .07);
       text-align: center;
       display: flex;
       flex-direction: column;
@@ -68,9 +91,17 @@
       margin-bottom: 18px;
       animation: heartbeat 2s ease-in-out infinite;
     }
+
     @keyframes heartbeat {
-      0%, 100% { transform: scale(1); }
-      50%      { transform: scale(1.12); }
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.12);
+      }
     }
 
     /* ─────── Header Question ─────── */
@@ -105,16 +136,18 @@
       font-weight: 700;
       font-family: inherit;
       cursor: pointer;
-      box-shadow: 0 4px 18px rgba(236,64,122,.35);
+      box-shadow: 0 4px 18px rgba(236, 64, 122, .35);
       transform: scale(var(--yes-scale));
       transition: transform .2s, box-shadow .2s;
       position: relative;
       z-index: 2;
     }
+
     .btn-yes:hover {
       transform: scale(calc(var(--yes-scale) * 1.06));
-      box-shadow: 0 6px 24px rgba(236,64,122,.5);
+      box-shadow: 0 6px 24px rgba(236, 64, 122, .5);
     }
+
     .btn-yes:active {
       transform: scale(calc(var(--yes-scale) * 0.95));
     }
@@ -139,8 +172,14 @@
       cursor: pointer;
       z-index: 1;
     }
-    .btn-no:hover { transform: scale(1.04); }
-    .btn-no.floating { position: absolute; }
+
+    .btn-no:hover {
+      transform: scale(1.04);
+    }
+
+    .btn-no.floating {
+      position: absolute;
+    }
 
     /* ─────── Helper Text ─────── */
     .helper {
@@ -156,18 +195,34 @@
       align-items: center;
       animation: popIn .5s ease;
     }
+
     @keyframes popIn {
-      0%   { transform: scale(.5); opacity: 0; }
-      70%  { transform: scale(1.08); opacity: 1; }
-      100% { transform: scale(1); }
+      0% {
+        transform: scale(.5);
+        opacity: 0;
+      }
+
+      70% {
+        transform: scale(1.08);
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(1);
+      }
     }
-    .success-view .emoji-icon { animation: none; }
+
+    .success-view .emoji-icon {
+      animation: none;
+    }
+
     .success-view h2 {
       font-size: 34px;
       font-weight: 800;
       color: #e91e63;
       margin-bottom: 8px;
     }
+
     .success-view p {
       font-size: 16px;
       color: #607d8b;
@@ -183,12 +238,22 @@
     }
 
     @media (max-width: 420px) {
-      .card { padding: 36px 22px 30px; }
-      .question { font-size: 18px; }
-      .btn-yes { padding: 12px 34px; font-size: 16px; }
+      .card {
+        padding: 36px 22px 30px;
+      }
+
+      .question {
+        font-size: 18px;
+      }
+
+      .btn-yes {
+        padding: 12px 34px;
+        font-size: 16px;
+      }
     }
   </style>
 </head>
+
 <body>
 
   <!-- Main Card -->
@@ -196,10 +261,10 @@
     <!-- Ask View -->
     <div id="askView">
       <div class="emoji-icon" aria-hidden="true">💌</div>
-      <h1 class="question">Will you give me a chance<br>to interview?</h1>
+      <h1 class="question">What if u hired me as a content creator… cute right?</h1>
       <div class="btn-area" id="btnArea">
         <button class="btn-yes" id="btnYes" type="button">Yes</button>
-        <button class="btn-no"  id="btnNo"  type="button">No</button>
+        <button class="btn-no" id="btnNo" type="button">No</button>
       </div>
       <p class="helper">*"No" seems a bit shy 😌*</p>
     </div>
@@ -207,220 +272,219 @@
     <!-- Success View -->
     <div class="success-view" id="successView" aria-live="polite">
       <div class="emoji-icon" aria-hidden="true">🥳</div>
-      <h2>YAY! 🎉</h2>
-      <p>Looking forward to speaking with you</p>
+      <h2>I knew you had taste 💅</h2>
     </div>
   </section>
 
   <canvas id="confetti" aria-hidden="true"></canvas>
 
-<script>
-(() => {
-  'use strict';
+  <script>
+    (() => {
+      'use strict';
 
-  // Component References
-  const btnArea     = document.getElementById('btnArea');
-  const btnYes      = document.getElementById('btnYes');
-  const btnNo       = document.getElementById('btnNo');
-  const askView     = document.getElementById('askView');
-  const successView = document.getElementById('successView');
-  const confettiEl  = document.getElementById('confetti');
-  const ctx         = confettiEl.getContext('2d');
+      // Component References
+      const btnArea = document.getElementById('btnArea');
+      const btnYes = document.getElementById('btnYes');
+      const btnNo = document.getElementById('btnNo');
+      const askView = document.getElementById('askView');
+      const successView = document.getElementById('successView');
+      const confettiEl = document.getElementById('confetti');
+      const ctx = confettiEl.getContext('2d');
 
-  // Accessibility Setting
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      // Accessibility Setting
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Background floating emojis (Disable if prefers-reduced-motion is on)
-  if (!prefersReduced) {
-    const pool = ['💕', '💗', '✨', '🌸', '💖'];
-    // Lightweight decorative floaters
-    for (let i = 0; i < 8; i++) {
-      const el = document.createElement('div');
-      el.className = 'floater';
-      el.setAttribute('aria-hidden', 'true');
-      el.textContent = pool[i % pool.length];
-      el.style.left = Math.random() * 100 + '%';
-      el.style.fontSize = (14 + Math.random() * 14) + 'px';
-      el.style.animationDuration = (10 + Math.random() * 12) + 's';
-      el.style.animationDelay = (Math.random() * 10) + 's';
-      document.body.appendChild(el);
-    }
-  }
+      // Background floating emojis (Disable if prefers-reduced-motion is on)
+      if (!prefersReduced) {
+        const pool = ['💕', '💗', '✨', '🌸', '💖'];
+        // Lightweight decorative floaters
+        for (let i = 0; i < 8; i++) {
+          const el = document.createElement('div');
+          el.className = 'floater';
+          el.setAttribute('aria-hidden', 'true');
+          el.textContent = pool[i % pool.length];
+          el.style.left = Math.random() * 100 + '%';
+          el.style.fontSize = (14 + Math.random() * 14) + 'px';
+          el.style.animationDuration = (10 + Math.random() * 12) + 's';
+          el.style.animationDelay = (Math.random() * 10) + 's';
+          document.body.appendChild(el);
+        }
+      }
 
-  // Dimension caching to avoid layout thrashing
-  let areaDims  = { w: 0, h: 0 };
-  let noBtnDims = { w: 0, h: 0 };
+      // Dimension caching to avoid layout thrashing
+      let areaDims = { w: 0, h: 0 };
+      let noBtnDims = { w: 0, h: 0 };
 
-  function cacheDimensions() {
-    areaDims.w = card.clientWidth;
-    areaDims.h = card.clientHeight;
-    noBtnDims.w = btnNo.offsetWidth;
-    noBtnDims.h = btnNo.offsetHeight;
-  }
-  cacheDimensions();
-  window.addEventListener('resize', cacheDimensions);
+      function cacheDimensions() {
+        areaDims.w = card.clientWidth;
+        areaDims.h = card.clientHeight;
+        noBtnDims.w = btnNo.offsetWidth;
+        noBtnDims.h = btnNo.offsetHeight;
+      }
+      cacheDimensions();
+      window.addEventListener('resize', cacheDimensions);
 
-  let dodges = 0;
-  let driftInterval = null;
-  const padding = 10;
+      let dodges = 0;
+      let driftInterval = null;
+      const padding = 10;
 
-  // Converts normal flex item into absolutely positioned element exactly where it is
-  function releaseToFloatingPosition() {
-    if (!btnNo.classList.contains('floating')) {
-      const rA = card.getBoundingClientRect();
-      const rN = btnNo.getBoundingClientRect();
-      btnNo.style.left = (rN.left - rA.left) + 'px';
-      btnNo.style.top = (rN.top - rA.top) + 'px';
-      btnNo.classList.add('floating');
-    }
-  }
+      // Converts normal flex item into absolutely positioned element exactly where it is
+      function releaseToFloatingPosition() {
+        if (!btnNo.classList.contains('floating')) {
+          const rA = card.getBoundingClientRect();
+          const rN = btnNo.getBoundingClientRect();
+          btnNo.style.left = (rN.left - rA.left) + 'px';
+          btnNo.style.top = (rN.top - rA.top) + 'px';
+          btnNo.classList.add('floating');
+        }
+      }
 
-  // Ambient active wandering (proactive movement so it's obvious on phones without tapping)
-  function ambientDrift() {
-    if (prefersReduced) return;
-    
-    releaseToFloatingPosition();
-    // Fast sprint across the card
-    btnNo.style.transition = 'left 0.45s ease-out, top 0.45s ease-out, transform .15s';
-    
-    const maxX = Math.max(0, areaDims.w - noBtnDims.w - padding * 2);
-    const maxY = Math.max(0, areaDims.h - noBtnDims.h - padding * 2);
+      // Ambient active wandering (proactive movement so it's obvious on phones without tapping)
+      function ambientDrift() {
+        if (prefersReduced) return;
 
-    // Wildly pick completely random points anywhere in the card
-    let nX = padding + Math.random() * maxX;
-    let nY = padding + Math.random() * maxY;
+        releaseToFloatingPosition();
+        // Fast sprint across the card
+        btnNo.style.transition = 'left 0.45s ease-out, top 0.45s ease-out, transform .15s';
 
-    btnNo.style.left = nX + 'px';
-    btnNo.style.top  = nY + 'px';
-  }
+        const maxX = Math.max(0, areaDims.w - noBtnDims.w - padding * 2);
+        const maxY = Math.max(0, areaDims.h - noBtnDims.h - padding * 2);
 
-  // Professional physics-based proximity sensor
-  function dodgeAwayFrom(sensorX, sensorY) {
-    if (prefersReduced) return;
-    
-    const rectA = card.getBoundingClientRect();
-    const rectN = btnNo.getBoundingClientRect();
-    
-    const btnCx = rectN.left + rectN.width / 2;
-    const btnCy = rectN.top + rectN.height / 2;
-    
-    // Calculate vector from cursor to button
-    let dx = btnCx - sensorX;
-    let dy = btnCy - sensorY;
-    const dist = Math.hypot(dx, dy);
+        // Wildly pick completely random points anywhere in the card
+        let nX = padding + Math.random() * maxX;
+        let nY = padding + Math.random() * maxY;
 
-    // Sensor radius setup
-    const sensorRadius = 75;
-    if (dist > sensorRadius) return;
+        btnNo.style.left = nX + 'px';
+        btnNo.style.top = nY + 'px';
+      }
 
-    dodges++;
-    clearInterval(driftInterval);
-    releaseToFloatingPosition();
-    cacheDimensions();
+      // Professional physics-based proximity sensor
+      function dodgeAwayFrom(sensorX, sensorY) {
+        if (prefersReduced) return;
 
-    // Push calculation: distance-based acceleration
-    let pushForce = 80 + Math.random() * 40;
-    
-    if (dist < 1) {
-        // Direct overlap fallback
-        const angle = Math.random() * Math.PI * 2;
-        dx = Math.cos(angle);
-        dy = Math.sin(angle);
-    } else {
-        // Normalize vector
-        dx /= dist;
-        dy /= dist;
-    }
+        const rectA = card.getBoundingClientRect();
+        const rectN = btnNo.getBoundingClientRect();
 
-    // Add angular noise so it doesn't just stick predictably
-    const angularNoise = (Math.random() - 0.5) * 1.5; 
-    const cN = Math.cos(angularNoise);
-    const sN = Math.sin(angularNoise);
-    const finalDx = dx * cN - dy * sN;
-    const finalDy = dx * sN + dy * cN;
+        const btnCx = rectN.left + rectN.width / 2;
+        const btnCy = rectN.top + rectN.height / 2;
 
-    // Determine target coordinate globally
-    let targetX = rectN.left + finalDx * pushForce;
-    let targetY = rectN.top + finalDy * pushForce;
+        // Calculate vector from cursor to button
+        let dx = btnCx - sensorX;
+        let dy = btnCy - sensorY;
+        const dist = Math.hypot(dx, dy);
 
-    // Bounds logic (global)
-    const minX = rectA.left + padding;
-    const maxX = rectA.right - noBtnDims.w - padding;
-    const minY = rectA.top + padding;
-    const maxY = rectA.bottom - noBtnDims.h - padding;
+        // Sensor radius setup
+        const sensorRadius = 75;
+        if (dist > sensorRadius) return;
 
-    // Hard clamp to ensure it stays in the btnArea 
-    targetX = Math.max(minX, Math.min(targetX, maxX));
-    targetY = Math.max(minY, Math.min(targetY, maxY));
-
-    // Convert to relative local layout
-    const localX = targetX - rectA.left;
-    const localY = targetY - rectA.top;
-
-    // Smooth fluid physics easing
-    btnNo.style.transition = 'left 0.18s cubic-bezier(0.1, 0.9, 0.2, 1), top 0.18s cubic-bezier(0.1, 0.9, 0.2, 1), transform .15s';
-    btnNo.style.left = localX + 'px';
-    btnNo.style.top = localY + 'px';
-
-    // Highlight the CTA
-    const s = Math.min(1 + dodges * 0.04, 1.25);
-    btnYes.style.setProperty('--yes-scale', s);
-
-    // Re-engage ambient motion after settling
-    setTimeout(() => {
+        dodges++;
         clearInterval(driftInterval);
+        releaseToFloatingPosition();
+        cacheDimensions();
+
+        // Push calculation: distance-based acceleration
+        let pushForce = 80 + Math.random() * 40;
+
+        if (dist < 1) {
+          // Direct overlap fallback
+          const angle = Math.random() * Math.PI * 2;
+          dx = Math.cos(angle);
+          dy = Math.sin(angle);
+        } else {
+          // Normalize vector
+          dx /= dist;
+          dy /= dist;
+        }
+
+        // Add angular noise so it doesn't just stick predictably
+        const angularNoise = (Math.random() - 0.5) * 1.5;
+        const cN = Math.cos(angularNoise);
+        const sN = Math.sin(angularNoise);
+        const finalDx = dx * cN - dy * sN;
+        const finalDy = dx * sN + dy * cN;
+
+        // Determine target coordinate globally
+        let targetX = rectN.left + finalDx * pushForce;
+        let targetY = rectN.top + finalDy * pushForce;
+
+        // Bounds logic (global)
+        const minX = rectA.left + padding;
+        const maxX = rectA.right - noBtnDims.w - padding;
+        const minY = rectA.top + padding;
+        const maxY = rectA.bottom - noBtnDims.h - padding;
+
+        // Hard clamp to ensure it stays in the btnArea 
+        targetX = Math.max(minX, Math.min(targetX, maxX));
+        targetY = Math.max(minY, Math.min(targetY, maxY));
+
+        // Convert to relative local layout
+        const localX = targetX - rectA.left;
+        const localY = targetY - rectA.top;
+
+        // Smooth fluid physics easing
+        btnNo.style.transition = 'left 0.18s cubic-bezier(0.1, 0.9, 0.2, 1), top 0.18s cubic-bezier(0.1, 0.9, 0.2, 1), transform .15s';
+        btnNo.style.left = localX + 'px';
+        btnNo.style.top = localY + 'px';
+
+        // Highlight the CTA
+        const s = Math.min(1 + dodges * 0.04, 1.25);
+        btnYes.style.setProperty('--yes-scale', s);
+
+        // Re-engage ambient motion after settling
+        setTimeout(() => {
+          clearInterval(driftInterval);
+          driftInterval = setInterval(ambientDrift, 900);
+        }, 400);
+      }
+
+      // Pointer event reading (Unified interface for mouse, stylus, touch)
+      document.addEventListener('pointermove', (e) => {
+        // Only engage physics sensor for moving mice/styluses, not dragged touches to prevent blocking scrolling
+        if (e.pointerType === 'touch') return;
+        dodgeAwayFrom(e.clientX, e.clientY);
+      });
+
+      // Specifically handle direct touch intents mathematically if pressed
+      btnNo.addEventListener('touchstart', (e) => {
+        if (prefersReduced) return;
+        // Pushes the button physically away from the tapped centroid if pressed
+        const t = e.touches[0];
+        dodgeAwayFrom(t.clientX, t.clientY);
+
+        // Prevent the default fast-click execution if we successfully moved it
+        if (dodges > 0 && Math.random() > 0.15) {
+          e.preventDefault();
+        }
+      }, { passive: false });
+
+      // If successfully clicked/focused/cornered
+      btnNo.addEventListener('click', (e) => {
+        dodgeAwayFrom(e.clientX, e.clientY);
+      });
+
+      // Init proactive motion
+      setTimeout(() => {
+        ambientDrift();
         driftInterval = setInterval(ambientDrift, 900);
-    }, 400);
-  }
+      }, 600);
 
-  // Pointer event reading (Unified interface for mouse, stylus, touch)
-  document.addEventListener('pointermove', (e) => {
-    // Only engage physics sensor for moving mice/styluses, not dragged touches to prevent blocking scrolling
-    if (e.pointerType === 'touch') return;
-    dodgeAwayFrom(e.clientX, e.clientY);
-  });
+      // Success Interaction
+      btnYes.addEventListener('click', () => {
+        askView.style.display = 'none';
+        successView.style.display = 'flex';
+        if (!prefersReduced) fireConfetti();
+      });
 
-  // Specifically handle direct touch intents mathematically if pressed
-  btnNo.addEventListener('touchstart', (e) => {
-    if (prefersReduced) return;
-    // Pushes the button physically away from the tapped centroid if pressed
-    const t = e.touches[0];
-    dodgeAwayFrom(t.clientX, t.clientY);
-    
-    // Prevent the default fast-click execution if we successfully moved it
-    if (dodges > 0 && Math.random() > 0.15) {
-      e.preventDefault(); 
-    }
-  }, { passive: false });
+      // Confetti
+      function fireConfetti() {
+        confettiEl.width = innerWidth;
+        confettiEl.height = innerHeight;
 
-  // If successfully clicked/focused/cornered
-  btnNo.addEventListener('click', (e) => {
-    dodgeAwayFrom(e.clientX, e.clientY);
-  });
+        const colors = ['#ec407a', '#ab47bc', '#ffb74d', '#4fc3f7', '#66bb6a', '#fff176', '#ff7043'];
+        const bits = [];
 
-  // Init proactive motion
-  setTimeout(() => {
-    ambientDrift();
-    driftInterval = setInterval(ambientDrift, 900);
-  }, 600);
-
-  // Success Interaction
-  btnYes.addEventListener('click', () => {
-    askView.style.display     = 'none';
-    successView.style.display = 'flex';
-    if (!prefersReduced) fireConfetti();
-  });
-
-  // Confetti
-  function fireConfetti() {
-    confettiEl.width  = innerWidth;
-    confettiEl.height = innerHeight;
-
-    const colors = ['#ec407a','#ab47bc','#ffb74d','#4fc3f7','#66bb6a','#fff176','#ff7043'];
-    const bits = [];
-
-    for (let i = 0; i < 80; i++) {
-        bits.push({
+        for (let i = 0; i < 80; i++) {
+          bits.push({
             x: Math.random() * confettiEl.width,
             y: Math.random() * confettiEl.height - confettiEl.height,
             w: 5 + Math.random() * 6,
@@ -431,23 +495,23 @@
             dr: (Math.random() - 0.5) * 10,
             color: colors[i % colors.length],
             alpha: 1
-        });
-    }
+          });
+        }
 
-    let tick = 0;
-    function loop() {
-        ctx.clearRect(0, 0, confettiEl.width, confettiEl.height);
-        let alive = false;
+        let tick = 0;
+        function loop() {
+          ctx.clearRect(0, 0, confettiEl.width, confettiEl.height);
+          let alive = false;
 
-        for (let i = 0; i < bits.length; i++) {
+          for (let i = 0; i < bits.length; i++) {
             const b = bits[i];
-            b.x  += b.dx;
-            b.y  += b.dy;
+            b.x += b.dx;
+            b.y += b.dy;
             b.dy += 0.05;
-            b.r  += b.dr;
+            b.r += b.dr;
             if (tick > 70) b.alpha -= 0.016;
             if (b.alpha <= 0) continue;
-            
+
             alive = true;
             ctx.save();
             ctx.translate(b.x, b.y);
@@ -456,14 +520,15 @@
             ctx.fillStyle = b.color;
             ctx.fillRect(-b.w / 2, -b.h / 2, b.w, b.h);
             ctx.restore();
-        }
+          }
 
-        tick++;
-        if (alive) requestAnimationFrame(loop);
-    }
-    loop();
-  }
-})();
-</script>
+          tick++;
+          if (alive) requestAnimationFrame(loop);
+        }
+        loop();
+      }
+    })();
+  </script>
 </body>
+
 </html>
