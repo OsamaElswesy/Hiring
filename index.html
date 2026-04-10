@@ -228,15 +228,14 @@
   const confettiEl  = document.getElementById('confetti');
   const ctx         = confettiEl.getContext('2d');
 
-  // Device & Settings detection
-  const isTouchDevice = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+  // Accessibility Setting
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Background floating emojis (Disable if prefers-reduced-motion is on)
   if (!prefersReduced) {
     const pool = ['💕', '💗', '✨', '🌸', '💖'];
-    const count = isTouchDevice ? 6 : 10;
-    for (let i = 0; i < count; i++) {
+    // Lightweight decorative floaters
+    for (let i = 0; i < 8; i++) {
       const el = document.createElement('div');
       el.className = 'floater';
       el.setAttribute('aria-hidden', 'true');
@@ -262,14 +261,11 @@
   cacheDimensions();
   window.addEventListener('resize', cacheDimensions);
 
-  // Dodge Rules
   let dodges = 0;
-  const MAX_DODGES = 6; 
-  let settled = prefersReduced;
   let driftInterval = null;
   const padding = 10;
 
-  // Converts normal flex item into absolutely positioned element at its exact current flexbox coordinates
+  // Converts normal flex item into absolutely positioned element exactly where it is
   function releaseToFloatingPosition() {
     if (!btnNo.classList.contains('floating')) {
       const rA = btnArea.getBoundingClientRect();
@@ -280,9 +276,9 @@
     }
   }
 
-  // Slowly roam randomly around the container
-  function drift() {
-    if (settled || isTouchDevice || prefersReduced) return;
+  // Ambient slight wandering
+  function ambientDrift() {
+    if (prefersReduced) return;
     
     releaseToFloatingPosition();
     btnNo.style.transition = 'left 2s ease-in-out, top 2s ease-in-out, transform .15s';
@@ -293,9 +289,8 @@
     const currX = parseFloat(btnNo.style.left) || padding;
     const currY = parseFloat(btnNo.style.top)  || padding;
 
-    // Pick a new point roughly nearby current point for slow graceful drifting
-    let nX = currX + (Math.random() - 0.5) * 80;
-    let nY = currY + (Math.random() - 0.5) * 60;
+    let nX = currX + (Math.random() - 0.5) * 60;
+    let nY = currY + (Math.random() - 0.5) * 40;
     
     nX = Math.max(padding, Math.min(nX, padding + maxX));
     nY = Math.max(padding, Math.min(nY, padding + maxY));
@@ -304,101 +299,124 @@
     btnNo.style.top  = nY + 'px';
   }
 
-  // Execute a rapid quick-dodge
-  function dodgeFast() {
-    if (settled) return;
+  // Professional physics-based proximity sensor
+  function dodgeAwayFrom(sensorX, sensorY) {
+    if (prefersReduced) return;
+    
+    const rectA = btnArea.getBoundingClientRect();
+    const rectN = btnNo.getBoundingClientRect();
+    
+    const btnCx = rectN.left + rectN.width / 2;
+    const btnCy = rectN.top + rectN.height / 2;
+    
+    // Calculate vector from cursor to button
+    let dx = btnCx - sensorX;
+    let dy = btnCy - sensorY;
+    const dist = Math.hypot(dx, dy);
+
+    // Sensor radius setup
+    const sensorRadius = 75;
+    if (dist > sensorRadius) return;
+
     dodges++;
-
-    if (dodges >= MAX_DODGES) {
-      // Joke is over. Surrender and stop moving.
-      settled = true;
-      clearInterval(driftInterval);
-      btnNo.style.transition = 'left 0.4s ease, top 0.4s ease, transform .15s';
-      return; 
-    }
-
     clearInterval(driftInterval);
     releaseToFloatingPosition();
-    
-    // Quick hardware accelerated transition
-    btnNo.style.transition = 'left 0.15s ease-out, top 0.15s ease-out, transform .15s';
-    
-    const maxX = Math.max(0, areaDims.w - noBtnDims.w - padding * 2);
-    const maxY = Math.max(0, areaDims.h - noBtnDims.h - padding * 2);
+    cacheDimensions();
 
-    btnNo.style.left = (padding + Math.random() * maxX) + 'px';
-    btnNo.style.top  = (padding + Math.random() * maxY) + 'px';
+    // Push calculation: distance-based acceleration
+    let pushForce = 80 + Math.random() * 40;
+    
+    if (dist < 1) {
+        // Direct overlap fallback
+        const angle = Math.random() * Math.PI * 2;
+        dx = Math.cos(angle);
+        dy = Math.sin(angle);
+    } else {
+        // Normalize vector
+        dx /= dist;
+        dy /= dist;
+    }
 
-    // Grow Yes softly to emphasize the CTA
+    // Add angular noise so it doesn't just stick predictably
+    const angularNoise = (Math.random() - 0.5) * 1.5; 
+    const cN = Math.cos(angularNoise);
+    const sN = Math.sin(angularNoise);
+    const finalDx = dx * cN - dy * sN;
+    const finalDy = dx * sN + dy * cN;
+
+    // Determine target coordinate globally
+    let targetX = rectN.left + finalDx * pushForce;
+    let targetY = rectN.top + finalDy * pushForce;
+
+    // Bounds logic (global)
+    const minX = rectA.left + padding;
+    const maxX = rectA.right - noBtnDims.w - padding;
+    const minY = rectA.top + padding;
+    const maxY = rectA.bottom - noBtnDims.h - padding;
+
+    // Hard clamp to ensure it stays in the btnArea 
+    targetX = Math.max(minX, Math.min(targetX, maxX));
+    targetY = Math.max(minY, Math.min(targetY, maxY));
+
+    // Convert to relative local layout
+    const localX = targetX - rectA.left;
+    const localY = targetY - rectA.top;
+
+    // Smooth fluid physics easing
+    btnNo.style.transition = 'left 0.18s cubic-bezier(0.1, 0.9, 0.2, 1), top 0.18s cubic-bezier(0.1, 0.9, 0.2, 1), transform .15s';
+    btnNo.style.left = localX + 'px';
+    btnNo.style.top = localY + 'px';
+
+    // Highlight the CTA
     const s = Math.min(1 + dodges * 0.04, 1.25);
     btnYes.style.setProperty('--yes-scale', s);
 
-    // After sprinting away, recover and start ambient drifting again
+    // Re-engage ambient motion after settling
     setTimeout(() => {
-      if (!settled && !isTouchDevice) {
-        driftInterval = setInterval(drift, 2200);
-      }
+        clearInterval(driftInterval);
+        driftInterval = setInterval(ambientDrift, 2200);
     }, 400);
   }
 
-  // Event Listeners Based on Device
-  if (!isTouchDevice) {
-    // Desktop: Read mouse proximity.
-    document.addEventListener('mousemove', (e) => {
-      if (settled || prefersReduced) return;
-      const rect = btnNo.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2;
-      const cy = rect.top + rect.height / 2;
-      
-      // Calculate distance between mouse point and center chunk of button
-      const dist = Math.hypot(e.clientX - cx, e.clientY - cy);
-      // Hover threshold where the button gets 'scared'
-      if (dist < 70) {
-        dodgeFast();
-      }
-    });
+  // Pointer event reading (Unified interface for mouse, stylus, touch)
+  document.addEventListener('pointermove', (e) => {
+    // Only engage physics sensor for moving mice/styluses, not dragged touches to prevent blocking scrolling
+    if (e.pointerType === 'touch') return;
+    dodgeAwayFrom(e.clientX, e.clientY);
+  });
 
-    // Initiate ambient drifting shortly after load
-    setTimeout(() => {
-      if (!settled) {
-        drift();
-        driftInterval = setInterval(drift, 2200);
-      }
-    }, 1000);
+  // Specifically handle direct touch intents mathematically if pressed
+  btnNo.addEventListener('touchstart', (e) => {
+    if (prefersReduced) return;
+    // Pushes the button physically away from the tapped centroid if pressed
+    const t = e.touches[0];
+    dodgeAwayFrom(t.clientX, t.clientY);
     
-  } else {
-    // Mobile/Touch device: Do not drift and don't read proximity
-    btnNo.addEventListener('touchstart', (e) => {
-      if (dodges === 0 && !prefersReduced) {
-        e.preventDefault(); // Stop standard click on first ever tap
-        dodges++;
-        releaseToFloatingPosition();
-        btnNo.style.transition = 'left 0.25s ease-out, top 0.25s ease-out, transform .15s';
-        
-        const maxX = Math.max(0, areaDims.w - noBtnDims.w - padding * 2);
-        const maxY = Math.max(0, areaDims.h - noBtnDims.h - padding * 2);
-        
-        // Single light playful shift
-        btnNo.style.left = (padding + Math.random() * maxX) + 'px';
-        btnNo.style.top  = (padding + Math.random() * maxY) + 'px';
-        btnYes.style.setProperty('--yes-scale', 1.05);
+    // Prevent the default fast-click execution if we successfully moved it
+    if (dodges > 0 && Math.random() > 0.15) {
+      e.preventDefault(); 
+    }
+  }, { passive: false });
 
-        settled = true; // Stay in place to let user tap afterwards
-      }
-    }, { passive: false });
-  }
+  // If successfully clicked/focused/cornered
+  btnNo.addEventListener('click', (e) => {
+    dodgeAwayFrom(e.clientX, e.clientY);
+  });
 
-  // Accessibility & Fallback: Even if dodging, if user manages to click, trigger a dodge (or admit defeat)
-  btnNo.addEventListener('click', dodgeFast);
+  // Init gentle motion
+  setTimeout(() => {
+    ambientDrift();
+    driftInterval = setInterval(ambientDrift, 2200);
+  }, 800);
 
-  // Success Interaction logic
+  // Success Interaction
   btnYes.addEventListener('click', () => {
     askView.style.display     = 'none';
     successView.style.display = 'flex';
     if (!prefersReduced) fireConfetti();
   });
 
-  // Confetti system
+  // Confetti
   function fireConfetti() {
     confettiEl.width  = innerWidth;
     confettiEl.height = innerHeight;
@@ -407,55 +425,49 @@
     const bits = [];
 
     for (let i = 0; i < 80; i++) {
-      bits.push({
-        x: Math.random() * confettiEl.width,
-        y: Math.random() * confettiEl.height - confettiEl.height,
-        w: 5 + Math.random() * 6,
-        h: 3 + Math.random() * 5,
-        r: Math.random() * 360,
-        dx: (Math.random() - 0.5) * 5,
-        dy: 2 + Math.random() * 4,
-        dr: (Math.random() - 0.5) * 10,
-        color: colors[i % colors.length],
-        alpha: 1
-      });
+        bits.push({
+            x: Math.random() * confettiEl.width,
+            y: Math.random() * confettiEl.height - confettiEl.height,
+            w: 5 + Math.random() * 6,
+            h: 3 + Math.random() * 5,
+            r: Math.random() * 360,
+            dx: (Math.random() - 0.5) * 5,
+            dy: 2 + Math.random() * 4,
+            dr: (Math.random() - 0.5) * 10,
+            color: colors[i % colors.length],
+            alpha: 1
+        });
     }
 
     let tick = 0;
     function loop() {
-      ctx.clearRect(0, 0, confettiEl.width, confettiEl.height);
-      let alive = false;
+        ctx.clearRect(0, 0, confettiEl.width, confettiEl.height);
+        let alive = false;
 
-      for (let i = 0; i < bits.length; i++) {
-        const b = bits[i];
-        b.x  += b.dx;
-        b.y  += b.dy;
-        b.dy += 0.05;
-        b.r  += b.dr;
-        if (tick > 70) b.alpha -= 0.016;
-        if (b.alpha <= 0) continue;
-        
-        alive = true;
-        ctx.save();
-        ctx.translate(b.x, b.y);
-        ctx.rotate(b.r * Math.PI / 180);
-        ctx.globalAlpha = Math.max(b.alpha, 0);
-        ctx.fillStyle = b.color;
-        ctx.fillRect(-b.w / 2, -b.h / 2, b.w, b.h);
-        ctx.restore();
-      }
+        for (let i = 0; i < bits.length; i++) {
+            const b = bits[i];
+            b.x  += b.dx;
+            b.y  += b.dy;
+            b.dy += 0.05;
+            b.r  += b.dr;
+            if (tick > 70) b.alpha -= 0.016;
+            if (b.alpha <= 0) continue;
+            
+            alive = true;
+            ctx.save();
+            ctx.translate(b.x, b.y);
+            ctx.rotate(b.r * Math.PI / 180);
+            ctx.globalAlpha = Math.max(b.alpha, 0);
+            ctx.fillStyle = b.color;
+            ctx.fillRect(-b.w / 2, -b.h / 2, b.w, b.h);
+            ctx.restore();
+        }
 
-      tick++;
-      if (alive) requestAnimationFrame(loop);
+        tick++;
+        if (alive) requestAnimationFrame(loop);
     }
     loop();
   }
-
-  window.addEventListener('resize', () => {
-    confettiEl.width  = innerWidth;
-    confettiEl.height = innerHeight;
-  });
-
 })();
 </script>
 </body>
