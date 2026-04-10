@@ -280,21 +280,15 @@
     if (prefersReduced) return;
     
     releaseToFloatingPosition();
-    // Snappier, more noticeable movement
-    btnNo.style.transition = 'left 0.8s cubic-bezier(0.25, 1, 0.5, 1), top 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform .15s';
+    // Fast sprint across the card
+    btnNo.style.transition = 'left 0.45s ease-out, top 0.45s ease-out, transform .15s';
     
     const maxX = Math.max(0, areaDims.w - noBtnDims.w - padding * 2);
     const maxY = Math.max(0, areaDims.h - noBtnDims.h - padding * 2);
 
-    const currX = parseFloat(btnNo.style.left) || padding;
-    const currY = parseFloat(btnNo.style.top)  || padding;
-
-    // Much larger radius so the movement is actively escaping
-    let nX = currX + (Math.random() - 0.5) * 200;
-    let nY = currY + (Math.random() - 0.5) * 120;
-    
-    nX = Math.max(padding, Math.min(nX, padding + maxX));
-    nY = Math.max(padding, Math.min(nY, padding + maxY));
+    // Wildly pick completely random points anywhere in the card
+    let nX = padding + Math.random() * maxX;
+    let nY = padding + Math.random() * maxY;
 
     btnNo.style.left = nX + 'px';
     btnNo.style.top  = nY + 'px';
@@ -375,7 +369,7 @@
     // Re-engage ambient motion after settling
     setTimeout(() => {
         clearInterval(driftInterval);
-        driftInterval = setInterval(ambientDrift, 1500);
+        driftInterval = setInterval(ambientDrift, 900);
     }, 400);
   }
 
@@ -407,7 +401,7 @@
   // Init proactive motion
   setTimeout(() => {
     ambientDrift();
-    driftInterval = setInterval(ambientDrift, 1500);
+    driftInterval = setInterval(ambientDrift, 900);
   }, 600);
 
   // Success Interaction
